@@ -1,6 +1,8 @@
 // @flow
 import { combineReducers } from 'redux';
 
+import { CACHE_SET, BEGIN_REQUEST, END_REQUEST, ERROR_REQUEST } from './action-types';
+
 type Reducer<S, A> = (state: S, action: A) => S;
 
 type RequestState = {
@@ -23,9 +25,9 @@ export const fetchingReducer: Reducer<RequestState, RequestAction> = (state = {}
   const { type, payload, meta: { key } } = action;
 
   switch (type) {
-    case '@@voxpop/request-begin':
+    case BEGIN_REQUEST:
       return { ...state, [key]: payload };
-    case '@@voxpop/request-end': {
+    case END_REQUEST: {
       const { [key]: unused, ...rest } = state; // eslint-disable-line no-unused-vars
       return rest;
     }
@@ -50,7 +52,7 @@ export const cacheReducer: Reducer<CacheState, CacheAction> = (state = {}, actio
   const { type, payload: { key, timestamp } } = action;
 
   switch (type) {
-    case '@@voxpop/cache-set':
+    case CACHE_SET:
       return { ...state, [key]: timestamp };
     default:
       return state;
@@ -73,7 +75,7 @@ type ErrorAction = {
 export const errorReducer: Reducer<ErrorState, ErrorAction> = (state = {}, action) => {
   const { type, error, meta: { key } } = action;
   switch (type) {
-    case '@@voxpop/request-error':
+    case ERROR_REQUEST:
       return { ...state, [key]: error };
     default:
       return state;
