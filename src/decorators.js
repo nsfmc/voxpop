@@ -23,9 +23,10 @@ type ReduxState = {[key: string]: {}};
  * Attaches a key-returning function to the given function. The key is used by
  * the cached and fetching decorators, and must be added *before* them.
  */
-export function key<T>(keyFn: Function): (f: T) => T {
-  return (wrappedFunc: T): T => {
-    wrappedFunc.KEY = keyFn; // eslint-disable-line no-param-reassign
+export function key<Function>(keyFn: Function): (f: Function) => Function {
+  return (wrappedFunc: Function): Function => {
+    const reWrapped = (...args) => wrappedFunc.apply(this, args);
+    reWrapped.KEY = keyFn;
     return wrappedFunc;
   };
 }

@@ -18,7 +18,7 @@ type CacheAction = {
 };
 // types for internal action creators used to populate cache
 export type CacheSetCreator = (key: string, timestamp: number) => CacheAction;
-export const cacheSetAction = (key: string, timestamp: number) => ({
+export const cacheSetAction: CacheSetCreator = (key, timestamp) => ({
   type: CACHE_SET,
   payload: { key, timestamp },
 });
